@@ -19,13 +19,6 @@ orientation = portrait
 fullscreen = 0
 
 
-[buildozer]
-
-log_level = 2
-
-warn_on_root = 1
-
-
 # Android
 
 android.api = 35
@@ -37,3 +30,12 @@ android.ndk = 27c
 android.ndk_api = 24
 
 android.archs = arm64-v8a
+
+android.accept_sdk_license = True
+
+
+[buildozer]
+
+log_level = 2
+
+warn_on_root = 1
