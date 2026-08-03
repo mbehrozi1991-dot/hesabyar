@@ -1,0 +1,83 @@
+#:import NoTransition kivy.uix.screenmanager.NoTransition
+
+
+<HomeScreen>:
+
+    BoxLayout:
+
+        orientation: "vertical"
+        padding: 20
+        spacing: 20
+
+
+        Label:
+            text: "Hesabyar"
+            font_size: 35
+
+
+        Button:
+            text: "Products"
+            on_press:
+                root.manager.current = "products"
+
+
+        Button:
+            text: "Customers"
+            on_press:
+                root.manager.current = "customers"
+
+
+        Button:
+            text: "Sales"
+            on_press:
+                root.manager.current = "sales"
+
+
+        Button:
+            text: "Reports"
+            on_press:
+                root.manager.current = "reports"
+
+
+
+<ProductScreen>:
+
+    BoxLayout:
+
+        orientation: "vertical"
+
+        Label:
+            text: "Products"
+
+
+
+<CustomerScreen>:
+
+    BoxLayout:
+
+        orientation: "vertical"
+
+        Label:
+            text: "Customers"
+
+
+
+<SaleScreen>:
+
+    BoxLayout:
+
+        orientation: "vertical"
+
+        Label:
+            text: "Sales"
+
+
+
+<ReportScreen>:
+
+    BoxLayout:
+
+        orientation: "vertical"
+
+        Label:
+            text: "Reports"
