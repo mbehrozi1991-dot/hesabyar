@@ -1,11 +1,17 @@
 import sqlite3
+import os
 
 
 class Database:
 
     def __init__(self):
 
-        self.conn = sqlite3.connect("hesabyar.db")
+        db_path = os.path.join(
+            os.getcwd(),
+            "hesabyar.db"
+        )
+
+        self.conn = sqlite3.connect(db_path)
 
         self.cursor = self.conn.cursor()
 
@@ -49,13 +55,13 @@ class Database:
 
 
 
-    # محصولات
+    # ---------- محصولات ----------
 
     def add_product(self, name, price, quantity):
 
         self.cursor.execute(
             """
-            INSERT INTO products(name,price,quantity)
+            INSERT INTO products(name, price, quantity)
             VALUES(?,?,?)
             """,
             (name, price, quantity)
@@ -75,13 +81,13 @@ class Database:
 
 
 
-    # مشتری‌ها
+    # ---------- مشتری‌ها ----------
 
     def add_customer(self, name, phone):
 
         self.cursor.execute(
             """
-            INSERT INTO customers(name,phone)
+            INSERT INTO customers(name, phone)
             VALUES(?,?)
             """,
             (name, phone)
@@ -101,13 +107,13 @@ class Database:
 
 
 
-    # فروش
+    # ---------- فروش ----------
 
     def add_sale(self, customer, product, quantity, total):
 
         self.cursor.execute(
             """
-            INSERT INTO sales(customer,product,quantity,total)
+            INSERT INTO sales(customer, product, quantity, total)
             VALUES(?,?,?,?)
             """,
             (
@@ -118,7 +124,8 @@ class Database:
             )
         )
 
-        self.cursor.commit()
+        # اصلاح شده
+        self.conn.commit()
 
 
 
