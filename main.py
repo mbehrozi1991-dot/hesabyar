@@ -8,31 +8,35 @@ from screens.home import HomeScreen
 from screens.products import ProductScreen
 from screens.customers import CustomerScreen
 from screens.sales import SaleScreen
-from screens.reports import ReportScreen
 from screens.expenses import ExpenseScreen
+from screens.reports import ReportScreen
 
 
 class HesabyarApp(MDApp):
 
     def build(self):
+        self.title = "حساب‌یار"
 
-        self.title = "Hesabyar"
-
-        self.theme_cls.primary_palette = "Blue"
+        # Theme
         self.theme_cls.theme_style = "Light"
+        self.theme_cls.primary_palette = "Blue"
+        self.theme_cls.accent_palette = "Green"
 
+        # Database
         self.db = Database()
 
+        # Load UI
         Builder.load_file("hesabyar.kv")
 
+        # Screen Manager
         sm = ScreenManager()
 
         sm.add_widget(HomeScreen(name="home"))
         sm.add_widget(ProductScreen(name="products"))
         sm.add_widget(CustomerScreen(name="customers"))
         sm.add_widget(SaleScreen(name="sales"))
-        sm.add_widget(ReportScreen(name="reports"))
         sm.add_widget(ExpenseScreen(name="expenses"))
+        sm.add_widget(ReportScreen(name="reports"))
 
         return sm
 
