@@ -23,18 +23,16 @@
 
 
                 MDLabel:
-                    text: "داشبورد مالی"
+                    text: "داشبورد حساب‌یار"
                     halign: "center"
                     font_style: "H5"
-                    size_hint_y: None
-                    height: dp(50)
 
 
                 MDCard:
-                    padding: dp(15)
                     size_hint_y: None
                     height: dp(120)
                     radius: [20]
+                    padding: dp(15)
 
                     MDBoxLayout:
                         orientation: "vertical"
@@ -46,11 +44,12 @@
                             text: root.total_inventory
 
 
+
                 MDCard:
-                    padding: dp(15)
                     size_hint_y: None
                     height: dp(120)
                     radius: [20]
+                    padding: dp(15)
 
                     MDBoxLayout:
                         orientation: "vertical"
@@ -62,11 +61,12 @@
                             text: root.today_sales
 
 
+
                 MDCard:
-                    padding: dp(15)
                     size_hint_y: None
                     height: dp(120)
                     radius: [20]
+                    padding: dp(15)
 
                     MDBoxLayout:
                         orientation: "vertical"
@@ -78,11 +78,12 @@
                             text: root.today_expenses
 
 
+
                 MDCard:
-                    padding: dp(15)
                     size_hint_y: None
                     height: dp(120)
                     radius: [20]
+                    padding: dp(15)
 
                     MDBoxLayout:
                         orientation: "vertical"
@@ -95,6 +96,8 @@
 
 
 
+
+
 <ProductScreen>:
 
     MDBoxLayout:
@@ -103,58 +106,34 @@
 
         MDTopAppBar:
             title: "کالاها"
-            elevation: 4
 
 
-        MDBoxLayout:
-            orientation: "vertical"
-            padding: dp(15)
-            spacing: dp(15)
+        MDTextField:
 
+            hint_text: "جستجوی کالا"
 
-            MDTextField:
+            on_text:
 
-                hint_text: "جستجوی کالا"
-
-                icon_left: "magnify"
-
-                on_text:
-                    root.search_products(self.text)
+                root.search_products(self.text)
 
 
 
-            MDLabel:
+        MDLabel:
 
-                text: "تعداد کالا: " + str(len(root.products))
+            text: "تعداد کالا : " + str(len(root.products))
 
-                halign: "center"
+            halign: "center"
 
-
-
-            MDRaisedButton:
-
-                text: "➕ افزودن کالا"
-
-                pos_hint:
-                    center_x: .5
-
-                on_release:
-
-                    root.add_product(
-                    "کالای جدید",
-                    "000000",
-                    0,
-                    0,
-                    0
-                    )
 
 
 
 <CustomerScreen>:
 
+
     MDBoxLayout:
 
         orientation: "vertical"
+
 
         MDTopAppBar:
 
@@ -162,23 +141,57 @@
 
 
 
+        MDTextField:
+
+            hint_text: "جستجوی مشتری"
+
+            on_text:
+
+                root.search_customers(self.text)
+
+
+
+        MDLabel:
+
+            text: "تعداد مشتری : " + str(len(root.customers))
+
+            halign: "center"
+
+
+
+
+
 <SaleScreen>:
+
 
     MDBoxLayout:
 
         orientation: "vertical"
 
+
         MDTopAppBar:
 
-            title: "فروش"
+            title: "ثبت فروش"
+
+
+
+        MDLabel:
+
+            text: "ثبت فاکتور فروش"
+
+            halign: "center"
+
+
 
 
 
 <ExpenseScreen>:
 
+
     MDBoxLayout:
 
         orientation: "vertical"
+
 
         MDTopAppBar:
 
@@ -186,12 +199,32 @@
 
 
 
+        MDLabel:
+
+            text: "ثبت هزینه‌های فروشگاه"
+
+            halign: "center"
+
+
+
+
+
 <ReportScreen>:
+
 
     MDBoxLayout:
 
         orientation: "vertical"
 
+
         MDTopAppBar:
 
             title: "گزارش‌ها"
+
+
+
+        MDLabel:
+
+            text: "گزارش فروش و سود"
+
+            halign: "center"
