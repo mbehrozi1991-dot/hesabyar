@@ -10,31 +10,60 @@ class ProductScreen(MDScreen):
 
 
     def on_enter(self):
+
         self.load_products()
+
 
 
     def load_products(self):
 
         app = self.manager.app
 
-        self.products.clear()
+        self.products = []
 
         if hasattr(app, "db"):
 
-            # اتصال واقعی به دیتابیس در مرحله بعد
+            # فعلا فروشگاه شماره 1
+            data = app.db.get_products(1)
 
-            self.products = []
+            for item in data:
+
+                self.products.append(item)
 
 
-    def add_product(self, name, barcode, buy_price, sell_price, quantity):
+
+    def add_product(self,
+                    name,
+                    barcode,
+                    buy_price,
+                    sell_price,
+                    quantity):
+
 
         app = self.manager.app
 
+
         if hasattr(app, "db"):
 
-            # ذخیره کالا در دیتابیس
 
-            pass
+            app.db.add_product(
+
+                1,
+
+                name,
+
+                barcode,
+
+                int(buy_price),
+
+                int(sell_price),
+
+                int(quantity),
+
+                ""
+
+            )
+
 
         self.load_products()
 
@@ -42,13 +71,7 @@ class ProductScreen(MDScreen):
 
     def delete_product(self, product_id):
 
-        app = self.manager.app
-
-        if hasattr(app, "db"):
-
-            # حذف کالا از دیتابیس
-
-            pass
+        # حذف در مرحله بعد اضافه می‌شود
 
         self.load_products()
 
@@ -58,4 +81,5 @@ class ProductScreen(MDScreen):
 
         self.search_text = text
 
-        # جستجوی کالاها در نسخه دیتابیس فعال می‌شود
+
+        # جستجوی پیشرفته بعد از ساخت لیست کالا اضافه می‌شود
