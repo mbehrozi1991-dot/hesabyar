@@ -1,25 +1,40 @@
 from kivymd.uix.screen import MDScreen
-from kivymd.uix.label import MDLabel
-from kivy.uix.boxlayout import BoxLayout
+from kivy.properties import StringProperty
 
 
 class ReportScreen(MDScreen):
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    total_sales = StringProperty("۰ تومان")
 
-        layout = BoxLayout(
-            orientation="vertical",
-            padding=20,
-            spacing=20
-        )
+    total_expenses = StringProperty("۰ تومان")
 
-        title = MDLabel(
-            text="Reports",
-            halign="center",
-            font_style="H4"
-        )
+    total_profit = StringProperty("۰ تومان")
 
-        layout.add_widget(title)
 
-        self.add_widget(layout)
+    def on_enter(self):
+
+        self.load_reports()
+
+
+
+    def load_reports(self):
+
+        app = self.manager.app
+
+
+        if hasattr(app, "db"):
+
+            # دریافت اطلاعات واقعی از SQLite
+            # در مرحله اتصال فعال می‌شود
+
+            self.total_sales = "۰ تومان"
+
+            self.total_expenses = "۰ تومان"
+
+            self.total_profit = "۰ تومان"
+
+
+
+    def refresh_reports(self):
+
+        self.load_reports()
