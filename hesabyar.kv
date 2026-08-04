@@ -1,22 +1,16 @@
 #:import dp kivy.metrics.dp
 
-ScreenManager:
-    HomeScreen:
-    ProductScreen:
-    CustomerScreen:
-    SaleScreen:
-    ReportScreen:
-    ExpenseScreen:
-
 
 <HomeScreen>:
 
-    BoxLayout:
+    MDBoxLayout:
         orientation: "vertical"
+
 
         MDTopAppBar:
             title: "حساب‌یار"
             elevation: 4
+
 
         ScrollView:
 
@@ -32,39 +26,97 @@ ScreenManager:
                     text: "داشبورد مالی"
                     halign: "center"
                     font_style: "H5"
+                    size_hint_y: None
+                    height: dp(50)
 
 
                 MDCard:
+                    orientation: "vertical"
+                    padding: dp(15)
                     size_hint_y: None
-                    height: dp(100)
+                    height: dp(120)
+                    radius: [20]
 
                     MDLabel:
-                        text: "موجودی کل\n0 تومان"
-                        halign: "center"
+                        text: "💰 موجودی کل"
+                        font_style: "H6"
+
+                    MDLabel:
+                        text: "0 تومان"
+                        theme_text_color: "Secondary"
 
 
                 MDCard:
+                    orientation: "vertical"
+                    padding: dp(15)
                     size_hint_y: None
-                    height: dp(100)
+                    height: dp(120)
+                    radius: [20]
 
                     MDLabel:
-                        text: "فروش امروز\n0 تومان"
-                        halign: "center"
+                        text: "🛒 فروش امروز"
+                        font_style: "H6"
+
+                    MDLabel:
+                        text: "0 تومان"
+                        theme_text_color: "Secondary"
 
 
                 MDCard:
+                    orientation: "vertical"
+                    padding: dp(15)
                     size_hint_y: None
-                    height: dp(100)
+                    height: dp(120)
+                    radius: [20]
 
                     MDLabel:
-                        text: "هزینه امروز\n0 تومان"
-                        halign: "center"
+                        text: "💳 هزینه امروز"
+                        font_style: "H6"
+
+                    MDLabel:
+                        text: "0 تومان"
+                        theme_text_color: "Secondary"
 
 
                 MDCard:
+                    orientation: "vertical"
+                    padding: dp(15)
                     size_hint_y: None
-                    height: dp(100)
+                    height: dp(120)
+                    radius: [20]
 
                     MDLabel:
-                        text: "سود ماه\n0 تومان"
-                        halign: "center"
+                        text: "📈 سود ماه"
+                        font_style: "H6"
+
+                    MDLabel:
+                        text: "0 تومان"
+                        theme_text_color: "Secondary"
+
+
+        MDBottomNavigation:
+
+            MDBottomNavigationItem:
+                name: "home"
+                text: "خانه"
+                icon: "home"
+
+            MDBottomNavigationItem:
+                name: "products"
+                text: "کالاها"
+                icon: "package"
+
+            MDBottomNavigationItem:
+                name: "sales"
+                text: "فروش"
+                icon: "cart"
+
+            MDBottomNavigationItem:
+                name: "expenses"
+                text: "هزینه"
+                icon: "cash"
+
+            MDBottomNavigationItem:
+                name: "reports"
+                text: "گزارش"
+                icon: "chart-bar"
