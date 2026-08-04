@@ -1,25 +1,63 @@
 from kivymd.uix.screen import MDScreen
-from kivymd.uix.label import MDLabel
-from kivy.uix.boxlayout import BoxLayout
+from kivy.properties import ListProperty, StringProperty
 
 
 class ExpenseScreen(MDScreen):
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    expenses = ListProperty([])
 
-        layout = BoxLayout(
-            orientation="vertical",
-            padding=20,
-            spacing=20
-        )
+    search_text = StringProperty("")
 
-        title = MDLabel(
-            text="Expenses",
-            halign="center",
-            font_style="H4"
-        )
 
-        layout.add_widget(title)
+    def on_enter(self):
+        self.load_expenses()
 
-        self.add_widget(layout)
+
+    def load_expenses(self):
+
+        app = self.manager.app
+
+        self.expenses.clear()
+
+        if hasattr(app, "db"):
+
+            # دریافت هزینه‌ها از SQLite
+            # در مرحله اتصال دیتابیس فعال می‌شود
+
+            self.expenses = []
+
+
+
+    def add_expense(self, title, amount):
+
+        app = self.manager.app
+
+        if hasattr(app, "db"):
+
+            # ذخیره هزینه در دیتابیس
+
+            pass
+
+
+        self.load_expenses()
+
+
+
+    def delete_expense(self, expense_id):
+
+        app = self.manager.app
+
+        if hasattr(app, "db"):
+
+            # حذف هزینه
+
+            pass
+
+
+        self.load_expenses()
+
+
+
+    def search_expenses(self, text):
+
+        self.search_text = text
