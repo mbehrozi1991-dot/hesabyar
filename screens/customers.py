@@ -1,25 +1,63 @@
 from kivymd.uix.screen import MDScreen
-from kivymd.uix.label import MDLabel
-from kivy.uix.boxlayout import BoxLayout
+from kivy.properties import ListProperty, StringProperty
 
 
 class CustomerScreen(MDScreen):
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    customers = ListProperty([])
 
-        layout = BoxLayout(
-            orientation="vertical",
-            padding=20,
-            spacing=20
-        )
+    search_text = StringProperty("")
 
-        title = MDLabel(
-            text="Customers",
-            halign="center",
-            font_style="H4"
-        )
 
-        layout.add_widget(title)
+    def on_enter(self):
+        self.load_customers()
 
-        self.add_widget(layout)
+
+    def load_customers(self):
+
+        app = self.manager.app
+
+        self.customers.clear()
+
+        if hasattr(app, "db"):
+
+            # در مرحله اتصال کامل دیتابیس
+            # اطلاعات مشتریان از SQLite خوانده می‌شود
+
+            self.customers = []
+
+
+
+    def add_customer(self, name, phone, address):
+
+        app = self.manager.app
+
+        if hasattr(app, "db"):
+
+            # ذخیره مشتری در دیتابیس
+
+            pass
+
+        self.load_customers()
+
+
+
+    def delete_customer(self, customer_id):
+
+        app = self.manager.app
+
+        if hasattr(app, "db"):
+
+            # حذف مشتری
+
+            pass
+
+        self.load_customers()
+
+
+
+    def search_customers(self, text):
+
+        self.search_text = text
+
+        # جستجوی مشتری‌ها
