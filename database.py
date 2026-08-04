@@ -1,138 +1,48 @@
 import sqlite3
-import os
 
 
 class Database:
 
     def __init__(self):
-
-        db_path = os.path.join(
-            os.getcwd(),
-            "hesabyar.db"
-        )
-
-        self.conn = sqlite3.connect(db_path)
-
-        self.cursor = self.conn.cursor()
-
+        self.conn = sqlite3.connect("hesabyar.db")
         self.create_tables()
-
 
 
     def create_tables(self):
 
-        self.cursor.execute("""
+        c = self.conn.cursor()
+
+        c.execute("""
         CREATE TABLE IF NOT EXISTS products(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id INTEGER PRIMARY KEY,
             name TEXT,
             price INTEGER,
             quantity INTEGER
         )
         """)
 
-
-        self.cursor.execute("""
+        c.execute("""
         CREATE TABLE IF NOT EXISTS customers(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id INTEGER PRIMARY KEY,
             name TEXT,
             phone TEXT
         )
         """)
 
-
-        self.cursor.execute("""
+        c.execute("""
         CREATE TABLE IF NOT EXISTS sales(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            customer TEXT,
+            id INTEGER PRIMARY KEY,
             product TEXT,
-            quantity INTEGER,
-            total INTEGER
+            amount INTEGER
         )
         """)
 
+        c.execute("""
+        CREATE TABLE IF NOT EXISTS expenses(
+            id INTEGER PRIMARY KEY,
+            title TEXT,
+            amount INTEGER
+        )
+        """)
 
         self.conn.commit()
-
-
-
-    # ---------- محصولات ----------
-
-    def add_product(self, name, price, quantity):
-
-        self.cursor.execute(
-            """
-            INSERT INTO products(name, price, quantity)
-            VALUES(?,?,?)
-            """,
-            (name, price, quantity)
-        )
-
-        self.conn.commit()
-
-
-
-    def get_products(self):
-
-        self.cursor.execute(
-            "SELECT * FROM products"
-        )
-
-        return self.cursor.fetchall()
-
-
-
-    # ---------- مشتری‌ها ----------
-
-    def add_customer(self, name, phone):
-
-        self.cursor.execute(
-            """
-            INSERT INTO customers(name, phone)
-            VALUES(?,?)
-            """,
-            (name, phone)
-        )
-
-        self.conn.commit()
-
-
-
-    def get_customers(self):
-
-        self.cursor.execute(
-            "SELECT * FROM customers"
-        )
-
-        return self.cursor.fetchall()
-
-
-
-    # ---------- فروش ----------
-
-    def add_sale(self, customer, product, quantity, total):
-
-        self.cursor.execute(
-            """
-            INSERT INTO sales(customer, product, quantity, total)
-            VALUES(?,?,?,?)
-            """,
-            (
-                customer,
-                product,
-                quantity,
-                total
-            )
-        )
-
-        # اصلاح شده
-        self.conn.commit()
-
-
-
-    def get_sales(self):
-
-        self.cursor.execute(
-            "SELECT * FROM sales"
-        )
-
-        return self.cursor.fetchall()
