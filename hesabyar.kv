@@ -1,100 +1,70 @@
-#:import NoTransition kivy.uix.screenmanager.NoTransition
+#:import dp kivy.metrics.dp
+
+ScreenManager:
+    HomeScreen:
+    ProductScreen:
+    CustomerScreen:
+    SaleScreen:
+    ReportScreen:
+    ExpenseScreen:
 
 
 <HomeScreen>:
 
     BoxLayout:
-
-        orientation: "vertical"
-        padding: 20
-        spacing: 20
-
-
-        Label:
-            text: "Hesabyar"
-            font_size: 35
-
-
-        Button:
-            text: "Products"
-            on_press:
-                root.manager.current = "products"
-
-
-        Button:
-            text: "Customers"
-            on_press:
-                root.manager.current = "customers"
-
-
-        Button:
-            text: "Sales"
-            on_press:
-                root.manager.current = "sales"
-
-
-        Button:
-            text: "Reports"
-            on_press:
-                root.manager.current = "reports"
-
-
-
-<ProductScreen>:
-
-    BoxLayout:
-
         orientation: "vertical"
 
-        Label:
-            text: "Products"
+        MDTopAppBar:
+            title: "حساب‌یار"
+            elevation: 4
+
+        ScrollView:
+
+            MDBoxLayout:
+                orientation: "vertical"
+                padding: dp(15)
+                spacing: dp(15)
+                size_hint_y: None
+                height: self.minimum_height
 
 
-
-<CustomerScreen>:
-
-    BoxLayout:
-
-        orientation: "vertical"
-
-        Label:
-            text: "Customers"
+                MDLabel:
+                    text: "داشبورد مالی"
+                    halign: "center"
+                    font_style: "H5"
 
 
+                MDCard:
+                    size_hint_y: None
+                    height: dp(100)
 
-<SaleScreen>:
-
-    BoxLayout:
-
-        orientation: "vertical"
-
-        Label:
-            text: "Sales"
+                    MDLabel:
+                        text: "موجودی کل\n0 تومان"
+                        halign: "center"
 
 
+                MDCard:
+                    size_hint_y: None
+                    height: dp(100)
 
-<ReportScreen>:
+                    MDLabel:
+                        text: "فروش امروز\n0 تومان"
+                        halign: "center"
 
-    BoxLayout:
 
-        orientation: "vertical"
+                MDCard:
+                    size_hint_y: None
+                    height: dp(100)
 
-        Label:
-            text: "Reports"
-<HomeScreen>:
-    name: "home"
+                    MDLabel:
+                        text: "هزینه امروز\n0 تومان"
+                        halign: "center"
 
-<ProductScreen>:
-    name: "products"
 
-<CustomerScreen>:
-    name: "customers"
+                MDCard:
+                    size_hint_y: None
+                    height: dp(100)
 
-<SaleScreen>:
-    name: "sales"
-
-<ReportScreen>:
-    name: "reports"
-
-<ExpenseScreen>:
-    name: "expenses"
+                    MDLabel:
+                        text: "سود ماه\n0 تومان"
+                        halign: "center"
