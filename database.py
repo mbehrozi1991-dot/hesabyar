@@ -5,120 +5,106 @@ from datetime import datetime
 class Database:
 
     def __init__(self):
+
         self.conn = sqlite3.connect("hesabyar.db")
+
         self.create_tables()
+
 
 
     def create_tables(self):
 
-        cursor = self.conn.cursor()
+        c = self.conn.cursor()
 
-        # فروشگاه‌ها
-        cursor.execute("""
+
+        c.execute("""
         CREATE TABLE IF NOT EXISTS stores(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
+            name TEXT,
             phone TEXT,
             address TEXT,
             created_at TEXT
         )
         """)
 
-        # کاربران (برای توسعه آینده)
-        cursor.execute("""
-        CREATE TABLE IF NOT EXISTS users(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            username TEXT,
-            password TEXT
-        )
-        """)
 
-        # کالاها
-        cursor.execute("""
+
+        c.execute("""
         CREATE TABLE IF NOT EXISTS products(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             store_id INTEGER,
-            name TEXT NOT NULL,
+            name TEXT,
             barcode TEXT,
-            buy_price INTEGER DEFAULT 0,
-            sell_price INTEGER DEFAULT 0,
-            quantity INTEGER DEFAULT 0,
-            category TEXT,
-            FOREIGN KEY(store_id) REFERENCES stores(id)
+            buy_price INTEGER,
+            sell_price INTEGER,
+            quantity INTEGER,
+            category TEXT
         )
         """)
 
-        # مشتریان
-        cursor.execute("""
+
+
+        c.execute("""
         CREATE TABLE IF NOT EXISTS customers(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             store_id INTEGER,
-            name TEXT NOT NULL,
+            name TEXT,
             phone TEXT,
-            address TEXT,
-            FOREIGN KEY(store_id) REFERENCES stores(id)
+            address TEXT
         )
         """)
 
-        # فاکتور فروش
-        cursor.execute("""
+
+
+        c.execute("""
         CREATE TABLE IF NOT EXISTS sales(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             store_id INTEGER,
             customer_id INTEGER,
-            total INTEGER DEFAULT 0,
-            date TEXT,
-            FOREIGN KEY(store_id) REFERENCES stores(id),
-            FOREIGN KEY(customer_id) REFERENCES customers(id)
+            total INTEGER,
+            date TEXT
         )
         """)
 
-        # اقلام داخل فاکتور
-        cursor.execute("""
+
+
+        c.execute("""
         CREATE TABLE IF NOT EXISTS sale_items(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             sale_id INTEGER,
             product_id INTEGER,
             quantity INTEGER,
-            price INTEGER,
-            FOREIGN KEY(sale_id) REFERENCES sales(id),
-            FOREIGN KEY(product_id) REFERENCES products(id)
+            price INTEGER
         )
         """)
 
-        # هزینه‌ها
-        cursor.execute("""
+
+
+        c.execute("""
         CREATE TABLE IF NOT EXISTS expenses(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             store_id INTEGER,
             title TEXT,
             amount INTEGER,
-            date TEXT,
-            FOREIGN KEY(store_id) REFERENCES stores(id)
+            date TEXT
         )
         """)
 
-        # تنظیمات
-        cursor.execute("""
-        CREATE TABLE IF NOT EXISTS settings(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            store_id INTEGER,
-            key TEXT,
-            value TEXT,
-            FOREIGN KEY(store_id) REFERENCES stores(id)
-        )
-        """)
 
         self.conn.commit()
 
 
+
+    # ---------- STORE ----------
+
     def add_store(self, name, phone="", address=""):
 
-        cursor = self.conn.cursor()
+        c = self.conn.cursor()
 
-        cursor.execute("""
-        INSERT INTO stores(name, phone, address, created_at)
-        VALUES (?, ?, ?, ?)
+        c.execute("""
+        INSERT INTO stores
+        (name,phone,address,created_at)
+        VALUES (?,?,?,?)
         """,
         (
             name,
@@ -129,4 +115,136 @@ class Database:
 
         self.conn.commit()
 
-        return cursor.lastrowid
+        return c.lastrowid
+
+
+
+    # ---------- PRODUCTS ----------
+
+    def add_product(self, store_id, name, barcode,
+                    buy_price, sell_price, quantity, category=""):
+
+        c = self.conn.cursor()
+
+        c.execute("""
+        INSERT INTO products
+        (store_id,name,barcode,buy_price,
+        sell_price,quantity,category)
+        VALUES (?,?,?,?,?,?,?)
+        """,
+        (
+            store_id,
+            name,
+            barcode,
+            buy_price,
+            sell_price,
+            quantity,
+            category
+        ))
+
+        self.conn.commit()
+
+
+
+    def get_products(self, store_id):
+
+        c = self.conn.cursor()
+
+        c.execute("""
+        SELECT * FROM products
+        WHERE store_id=?
+        """,
+        (store_id,))
+
+        return c.fetchall()
+
+
+
+    # ---------- CUSTOMERS ----------
+
+    def add_customer(self, store_id, name, phone, address=""):
+
+        c = self.conn.cursor()
+
+        c.execute("""
+        INSERT INTO customers
+        (store_id,name,phone,address)
+        VALUES (?,?,?,?)
+        """,
+        (
+            store_id,
+            name,
+            phone,
+            address
+        ))
+
+        self.conn.commit()
+
+
+
+    def get_customers(self, store_id):
+
+        c = self.conn.cursor()
+
+        c.execute("""
+        SELECT * FROM customers
+        WHERE store_id=?
+        """,
+        (store_id,))
+
+        return c.fetchall()
+
+
+
+    # ---------- EXPENSES ----------
+
+    def add_expense(self, store_id, title, amount):
+
+        c = self.conn.cursor()
+
+        c.execute("""
+        INSERT INTO expenses
+        (store_id,title,amount,date)
+        VALUES (?,?,?,?)
+        """,
+        (
+            store_id,
+            title,
+            amount,
+            datetime.now().strftime("%Y-%m-%d")
+        ))
+
+        self.conn.commit()
+
+
+
+    def get_expenses(self, store_id):
+
+        c = self.conn.cursor()
+
+        c.execute("""
+        SELECT * FROM expenses
+        WHERE store_id=?
+        """,
+        (store_id,))
+
+        return c.fetchall()
+
+
+
+    # ---------- REPORT ----------
+
+    def get_total_expense(self, store_id):
+
+        c = self.conn.cursor()
+
+        c.execute("""
+        SELECT SUM(amount)
+        FROM expenses
+        WHERE store_id=?
+        """,
+        (store_id,))
+
+        result = c.fetchone()[0]
+
+        return result or 0
