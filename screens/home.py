@@ -1,25 +1,56 @@
 from kivymd.uix.screen import MDScreen
-from kivymd.uix.label import MDLabel
-from kivy.uix.boxlayout import BoxLayout
+from kivy.properties import StringProperty, NumericProperty
+from datetime import datetime
 
 
 class HomeScreen(MDScreen):
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    store_name = StringProperty("فروشگاه من")
 
-        layout = BoxLayout(
-            orientation="vertical",
-            padding=20,
-            spacing=20
-        )
+    total_inventory = StringProperty("۰ تومان")
+    today_sales = StringProperty("۰ تومان")
+    today_expenses = StringProperty("۰ تومان")
+    monthly_profit = StringProperty("۰ تومان")
 
-        title = MDLabel(
-            text="به حساب‌یار خوش آمدید",
-            halign="center",
-            font_style="H4"
-        )
+    product_count = NumericProperty(0)
+    customer_count = NumericProperty(0)
 
-        layout.add_widget(title)
 
-        self.add_widget(layout)
+    def on_enter(self):
+        self.load_dashboard()
+
+
+    def load_dashboard(self):
+
+        app = self.manager.app
+
+        if hasattr(app, "db"):
+
+            # در مرحله اتصال کامل دیتابیس
+            # این قسمت با اطلاعات واقعی پر می‌شود
+
+            self.store_name = "فروشگاه من"
+
+            self.total_inventory = self.format_price(0)
+            self.today_sales = self.format_price(0)
+            self.today_expenses = self.format_price(0)
+            self.monthly_profit = self.format_price(0)
+
+            self.product_count = 0
+            self.customer_count = 0
+
+
+
+    def format_price(self, price):
+
+        return "{:,} تومان".format(price)
+
+
+    def refresh_dashboard(self):
+
+        self.load_dashboard()
+
+
+    def get_date(self):
+
+        return datetime.now().strftime("%Y/%m/%d")
