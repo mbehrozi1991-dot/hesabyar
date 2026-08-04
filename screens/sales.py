@@ -1,25 +1,71 @@
 from kivymd.uix.screen import MDScreen
-from kivymd.uix.label import MDLabel
-from kivy.uix.boxlayout import BoxLayout
+from kivy.properties import ListProperty, StringProperty, NumericProperty
 
 
 class SaleScreen(MDScreen):
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    cart = ListProperty([])
 
-        layout = BoxLayout(
-            orientation="vertical",
-            padding=20,
-            spacing=20
-        )
+    customer_name = StringProperty("")
 
-        title = MDLabel(
-            text="Sales",
-            halign="center",
-            font_style="H4"
-        )
+    total_price = NumericProperty(0)
 
-        layout.add_widget(title)
 
-        self.add_widget(layout)
+    def on_enter(self):
+        self.reset_sale()
+
+
+    def reset_sale(self):
+
+        self.cart = []
+        self.total_price = 0
+
+
+
+    def add_to_cart(self, product, quantity):
+
+        item = {
+            "product": product,
+            "quantity": quantity
+        }
+
+        self.cart.append(item)
+
+        self.calculate_total()
+
+
+
+    def calculate_total(self):
+
+        total = 0
+
+        for item in self.cart:
+
+            total += item.get("price", 0) * item.get("quantity", 0)
+
+
+        self.total_price = total
+
+
+
+    def save_sale(self):
+
+        app = self.manager.app
+
+        if hasattr(app, "db"):
+
+            # ثبت فاکتور در دیتابیس
+            pass
+
+
+        self.reset_sale()
+
+
+
+    def remove_item(self, index):
+
+        if index < len(self.cart):
+
+            self.cart.pop(index)
+
+            self.calculate_total()
