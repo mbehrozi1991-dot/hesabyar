@@ -12,7 +12,7 @@ source.include_exts = py,kv,png,jpg,json,db
 
 version = 1.0
 
-requirements = python3,kivy
+requirements = python3,kivy,kivymd,arabic-reshaper,python-bidi==0.4.2
 
 orientation = portrait
 

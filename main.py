@@ -16,7 +16,7 @@ class HesabyarApp(MDApp):
 
     def build(self):
 
-        self.title = "حساب‌یار"
+        self.title = "Hesabyar"
 
         self.theme_cls.primary_palette = "Blue"
         self.theme_cls.theme_style = "Light"
