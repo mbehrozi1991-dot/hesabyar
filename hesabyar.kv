@@ -8,7 +8,7 @@
 
 
         MDTopAppBar:
-            title: "حساب‌یار"
+            title: root.store_name
             elevation: 4
 
 
@@ -31,92 +31,167 @@
 
 
                 MDCard:
-                    orientation: "vertical"
                     padding: dp(15)
                     size_hint_y: None
                     height: dp(120)
                     radius: [20]
 
-                    MDLabel:
-                        text: "💰 موجودی کل"
-                        font_style: "H6"
+                    MDBoxLayout:
+                        orientation: "vertical"
 
-                    MDLabel:
-                        text: "0 تومان"
-                        theme_text_color: "Secondary"
+                        MDLabel:
+                            text: "💰 موجودی انبار"
+
+                        MDLabel:
+                            text: root.total_inventory
 
 
                 MDCard:
-                    orientation: "vertical"
                     padding: dp(15)
                     size_hint_y: None
                     height: dp(120)
                     radius: [20]
 
-                    MDLabel:
-                        text: "🛒 فروش امروز"
-                        font_style: "H6"
+                    MDBoxLayout:
+                        orientation: "vertical"
 
-                    MDLabel:
-                        text: "0 تومان"
-                        theme_text_color: "Secondary"
+                        MDLabel:
+                            text: "🛒 فروش امروز"
+
+                        MDLabel:
+                            text: root.today_sales
 
 
                 MDCard:
-                    orientation: "vertical"
                     padding: dp(15)
                     size_hint_y: None
                     height: dp(120)
                     radius: [20]
 
-                    MDLabel:
-                        text: "💳 هزینه امروز"
-                        font_style: "H6"
+                    MDBoxLayout:
+                        orientation: "vertical"
 
-                    MDLabel:
-                        text: "0 تومان"
-                        theme_text_color: "Secondary"
+                        MDLabel:
+                            text: "💳 هزینه امروز"
+
+                        MDLabel:
+                            text: root.today_expenses
 
 
                 MDCard:
-                    orientation: "vertical"
                     padding: dp(15)
                     size_hint_y: None
                     height: dp(120)
                     radius: [20]
 
-                    MDLabel:
-                        text: "📈 سود ماه"
-                        font_style: "H6"
+                    MDBoxLayout:
+                        orientation: "vertical"
 
-                    MDLabel:
-                        text: "0 تومان"
-                        theme_text_color: "Secondary"
+                        MDLabel:
+                            text: "📈 سود ماهانه"
+
+                        MDLabel:
+                            text: root.monthly_profit
 
 
-        MDBottomNavigation:
 
-            MDBottomNavigationItem:
-                name: "home"
-                text: "خانه"
-                icon: "home"
+<ProductScreen>:
 
-            MDBottomNavigationItem:
-                name: "products"
-                text: "کالاها"
-                icon: "package"
+    MDBoxLayout:
+        orientation: "vertical"
 
-            MDBottomNavigationItem:
-                name: "sales"
-                text: "فروش"
-                icon: "cart"
 
-            MDBottomNavigationItem:
-                name: "expenses"
-                text: "هزینه"
-                icon: "cash"
+        MDTopAppBar:
+            title: "کالاها"
+            elevation: 4
 
-            MDBottomNavigationItem:
-                name: "reports"
-                text: "گزارش"
-                icon: "chart-bar"
+
+        MDBoxLayout:
+            orientation: "vertical"
+            padding: dp(15)
+            spacing: dp(15)
+
+
+            MDTextField:
+
+                hint_text: "جستجوی کالا"
+
+                icon_left: "magnify"
+
+                on_text:
+                    root.search_products(self.text)
+
+
+
+            MDLabel:
+
+                text: "تعداد کالا: " + str(len(root.products))
+
+                halign: "center"
+
+
+
+            MDRaisedButton:
+
+                text: "➕ افزودن کالا"
+
+                pos_hint:
+                    center_x: .5
+
+                on_release:
+
+                    root.add_product(
+                    "کالای جدید",
+                    "000000",
+                    0,
+                    0,
+                    0
+                    )
+
+
+
+<CustomerScreen>:
+
+    MDBoxLayout:
+
+        orientation: "vertical"
+
+        MDTopAppBar:
+
+            title: "مشتریان"
+
+
+
+<SaleScreen>:
+
+    MDBoxLayout:
+
+        orientation: "vertical"
+
+        MDTopAppBar:
+
+            title: "فروش"
+
+
+
+<ExpenseScreen>:
+
+    MDBoxLayout:
+
+        orientation: "vertical"
+
+        MDTopAppBar:
+
+            title: "هزینه‌ها"
+
+
+
+<ReportScreen>:
+
+    MDBoxLayout:
+
+        orientation: "vertical"
+
+        MDTopAppBar:
+
+            title: "گزارش‌ها"
