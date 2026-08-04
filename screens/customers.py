@@ -10,54 +10,65 @@ class CustomerScreen(MDScreen):
 
 
     def on_enter(self):
+
         self.load_customers()
+
 
 
     def load_customers(self):
 
         app = self.manager.app
 
-        self.customers.clear()
+        self.customers = []
+
 
         if hasattr(app, "db"):
 
-            # در مرحله اتصال کامل دیتابیس
-            # اطلاعات مشتریان از SQLite خوانده می‌شود
-
-            self.customers = []
+            data = app.db.get_customers(1)
 
 
+            for item in data:
 
-    def add_customer(self, name, phone, address):
+                self.customers.append(item)
+
+
+
+
+    def add_customer(self, name, phone, address=""):
 
         app = self.manager.app
 
+
         if hasattr(app, "db"):
 
-            # ذخیره مشتری در دیتابیس
 
-            pass
+            app.db.add_customer(
+
+                1,
+
+                name,
+
+                phone,
+
+                address
+
+            )
+
 
         self.load_customers()
+
 
 
 
     def delete_customer(self, customer_id):
 
-        app = self.manager.app
-
-        if hasattr(app, "db"):
-
-            # حذف مشتری
-
-            pass
+        # حذف مشتری در مرحله بعد اضافه می‌شود
 
         self.load_customers()
+
 
 
 
     def search_customers(self, text):
 
         self.search_text = text
-
-        # جستجوی مشتری‌ها
