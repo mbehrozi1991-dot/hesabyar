@@ -1,4 +1,7 @@
 #:import dp kivy.metrics.dp
+#:import MDRaisedButton kivymd.uix.button.MDRaisedButton
+#:import MDTextField kivymd.uix.textfield.MDTextField
+#:import MDDataTable kivymd.uix.datatables.MDDataTable
 
 
 <HomeScreen>:
@@ -10,6 +13,7 @@
         MDTopAppBar:
             title: root.store_name
             elevation: 4
+            right_action_items: [["refresh", lambda x: root.refresh_dashboard()]]
 
 
         ScrollView:
@@ -42,6 +46,8 @@
 
                         MDLabel:
                             text: root.total_inventory
+                            font_style: "H6"
+                            bold: True
 
 
 
@@ -59,6 +65,8 @@
 
                         MDLabel:
                             text: root.today_sales
+                            font_style: "H6"
+                            bold: True
 
 
 
@@ -76,6 +84,8 @@
 
                         MDLabel:
                             text: root.today_expenses
+                            font_style: "H6"
+                            bold: True
 
 
 
@@ -93,7 +103,47 @@
 
                         MDLabel:
                             text: root.monthly_profit
+                            font_style: "H6"
+                            bold: True
 
+
+                MDCard:
+                    size_hint_y: None
+                    height: dp(80)
+                    radius: [20]
+                    padding: dp(15)
+
+                    MDBoxLayout:
+                        orientation: "horizontal"
+                        spacing: dp(20)
+
+                        MDBoxLayout:
+                            orientation: "vertical"
+                            size_hint_x: 0.5
+
+                            MDLabel:
+                                text: "📦 کالاها"
+                                halign: "center"
+
+                            MDLabel:
+                                text: str(root.product_count)
+                                halign: "center"
+                                font_style: "H6"
+                                bold: True
+
+                        MDBoxLayout:
+                            orientation: "vertical"
+                            size_hint_x: 0.5
+
+                            MDLabel:
+                                text: "👥 مشتریان"
+                                halign: "center"
+
+                            MDLabel:
+                                text: str(root.customer_count)
+                                halign: "center"
+                                font_style: "H6"
+                                bold: True
 
 
 
@@ -106,125 +156,355 @@
 
         MDTopAppBar:
             title: "کالاها"
+            elevation: 4
 
 
-        MDTextField:
+        MDBoxLayout:
+            orientation: "horizontal"
+            size_hint_y: None
+            height: dp(60)
+            padding: dp(10)
+            spacing: dp(10)
 
-            hint_text: "جستجوی کالا"
+            MDTextField:
+                hint_text: "جستجوی کالا"
+                on_text: root.search_products(self.text)
 
-            on_text:
-
-                root.search_products(self.text)
-
+            MDRaisedButton:
+                text: "افزودن"
+                size_hint_x: None
+                width: dp(100)
+                on_press: app.root.current = "add_product"
 
 
         MDLabel:
-
             text: "تعداد کالا : " + str(len(root.products))
-
             halign: "center"
+            size_hint_y: None
+            height: dp(40)
+
+
+        ScrollView:
+
+            MDList:
+                spacing: dp(10)
+                padding: dp(10)
+
+                RecycleView:
+                    size_hint_y: None
+                    height: self.minimum_height
+
+                    RecycleBoxLayout:
+                        orientation: "vertical"
+                        spacing: dp(10)
+                        size_hint_y: None
+                        height: self.minimum_height
+                        default_size_hint_y: None
+                        default_height: dp(80)
+
+                        ProductItem:
+                            product_id: self.product_id
+                            product_name: self.product_name
+                            sell_price: self.sell_price
+                            quantity: self.quantity
 
 
 
 
 <CustomerScreen>:
 
-
     MDBoxLayout:
-
         orientation: "vertical"
 
 
         MDTopAppBar:
-
             title: "مشتریان"
+            elevation: 4
 
 
+        MDBoxLayout:
+            orientation: "horizontal"
+            size_hint_y: None
+            height: dp(60)
+            padding: dp(10)
+            spacing: dp(10)
 
-        MDTextField:
+            MDTextField:
+                hint_text: "جستجوی مشتری"
+                on_text: root.search_customers(self.text)
 
-            hint_text: "جستجوی مشتری"
-
-            on_text:
-
-                root.search_customers(self.text)
-
+            MDRaisedButton:
+                text: "افزودن"
+                size_hint_x: None
+                width: dp(100)
+                on_press: app.root.current = "add_customer"
 
 
         MDLabel:
-
             text: "تعداد مشتری : " + str(len(root.customers))
-
             halign: "center"
+            size_hint_y: None
+            height: dp(40)
 
+
+        ScrollView:
+
+            MDList:
+                spacing: dp(10)
+                padding: dp(10)
 
 
 
 
 <SaleScreen>:
 
-
     MDBoxLayout:
-
         orientation: "vertical"
 
 
         MDTopAppBar:
-
             title: "ثبت فروش"
+            elevation: 4
 
 
+        MDBoxLayout:
+            orientation: "vertical"
+            padding: dp(15)
+            spacing: dp(10)
 
-        MDLabel:
+            MDTextField:
+                hint_text: "نام مشتری"
+                multiline: False
+                on_text: root.customer_name = self.text
 
-            text: "ثبت فاکتور فروش"
+            MDBoxLayout:
+                orientation: "horizontal"
+                size_hint_y: None
+                height: dp(50)
+                spacing: dp(10)
 
-            halign: "center"
+                MDTextField:
+                    hint_text: "شناسه کالا"
+                    multiline: False
 
+                MDTextField:
+                    hint_text: "تعداد"
+                    multiline: False
+
+                MDRaisedButton:
+                    text: "افزودن"
+                    size_hint_x: None
+                    width: dp(80)
+
+
+            MDLabel:
+                text: "سبد خرید"
+                halign: "center"
+                size_hint_y: None
+                height: dp(30)
+
+            ScrollView:
+                MDList:
+                    spacing: dp(5)
+                    padding: dp(5)
+
+
+            MDBoxLayout:
+                orientation: "horizontal"
+                size_hint_y: None
+                height: dp(60)
+                spacing: dp(10)
+                padding: dp(10)
+
+                MDLabel:
+                    text: "جمع کل:"
+                    size_hint_x: None
+                    width: dp(100)
+
+                MDLabel:
+                    text: "{:,} تومان".format(int(root.total_price))
+                    font_style: "H6"
+                    bold: True
+
+            MDBoxLayout:
+                orientation: "horizontal"
+                size_hint_y: None
+                height: dp(50)
+                spacing: dp(10)
+                padding: dp(10)
+
+                MDRaisedButton:
+                    text: "ذخیره"
+                    size_hint_x: 0.5
+                    on_press: root.save_sale()
+
+                MDRaisedButton:
+                    text: "لغو"
+                    size_hint_x: 0.5
+                    on_press: root.reset_sale()
 
 
 
 
 <ExpenseScreen>:
 
-
     MDBoxLayout:
-
         orientation: "vertical"
 
 
         MDTopAppBar:
-
             title: "هزینه‌ها"
+            elevation: 4
 
+
+        MDBoxLayout:
+            orientation: "vertical"
+            padding: dp(15)
+            spacing: dp(10)
+            size_hint_y: None
+            height: dp(150)
+
+            MDTextField:
+                hint_text: "عنوان هزینه"
+                multiline: False
+
+            MDTextField:
+                hint_text: "مبلغ"
+                multiline: False
+                input_filter: "int"
+
+            MDRaisedButton:
+                text: "ثبت هزینه"
+                size_hint_y: None
+                height: dp(50)
 
 
         MDLabel:
-
-            text: "ثبت هزینه‌های فروشگاه"
-
+            text: "تاریخچه هزینه‌ها"
             halign: "center"
+            size_hint_y: None
+            height: dp(30)
 
+        ScrollView:
+
+            MDList:
+                spacing: dp(10)
+                padding: dp(10)
 
 
 
 
 <ReportScreen>:
 
-
     MDBoxLayout:
-
         orientation: "vertical"
 
 
         MDTopAppBar:
-
             title: "گزارش‌ها"
+            elevation: 4
+            right_action_items: [["refresh", lambda x: root.refresh_reports()]]
 
 
+        ScrollView:
 
-        MDLabel:
+            MDBoxLayout:
+                orientation: "vertical"
+                padding: dp(15)
+                spacing: dp(15)
+                size_hint_y: None
+                height: self.minimum_height
 
-            text: "گزارش فروش و سود"
 
-            halign: "center"
+                MDCard:
+                    size_hint_y: None
+                    height: dp(100)
+                    radius: [20]
+                    padding: dp(15)
+
+                    MDBoxLayout:
+                        orientation: "vertical"
+
+                        MDLabel:
+                            text: "📊 کل فروش"
+
+                        MDLabel:
+                            text: root.total_sales
+                            font_style: "H6"
+                            bold: True
+
+
+                MDCard:
+                    size_hint_y: None
+                    height: dp(100)
+                    radius: [20]
+                    padding: dp(15)
+
+                    MDBoxLayout:
+                        orientation: "vertical"
+
+                        MDLabel:
+                            text: "💰 کل هزینه‌ها"
+
+                        MDLabel:
+                            text: root.total_expenses
+                            font_style: "H6"
+                            bold: True
+
+
+                MDCard:
+                    size_hint_y: None
+                    height: dp(100)
+                    radius: [20]
+                    padding: dp(15)
+
+                    MDBoxLayout:
+                        orientation: "vertical"
+
+                        MDLabel:
+                            text: "📈 کل سود"
+
+                        MDLabel:
+                            text: root.total_profit
+                            font_style: "H6"
+                            bold: True
+                            color: (0, 1, 0, 1)
+
+
+                MDCard:
+                    size_hint_y: None
+                    height: dp(80)
+                    radius: [20]
+                    padding: dp(15)
+
+                    MDBoxLayout:
+                        orientation: "horizontal"
+                        spacing: dp(20)
+
+                        MDBoxLayout:
+                            orientation: "vertical"
+                            size_hint_x: 0.5
+
+                            MDLabel:
+                                text: "📦 کل کالاها"
+                                halign: "center"
+
+                            MDLabel:
+                                text: root.total_products
+                                halign: "center"
+                                font_style: "H6"
+                                bold: True
+
+                        MDBoxLayout:
+                            orientation: "vertical"
+                            size_hint_x: 0.5
+
+                            MDLabel:
+                                text: "👥 کل مشتریان"
+                                halign: "center"
+
+                            MDLabel:
+                                text: root.total_customers
+                                halign: "center"
+                                font_style: "H6"
+                                bold: True
