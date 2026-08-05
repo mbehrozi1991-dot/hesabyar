@@ -63,7 +63,7 @@ class HomeScreen(MDScreen):
             products = app.db.get_products(1)
             for product in products:
                 # product = (id, store_id, name, barcode, buy_price, sell_price, quantity, category)
-                quantity = product[6] if len(product) > 6 else 0
+                quantity = product[7] if len(product) > 7 else 0
                 sell_price = product[5] if len(product) > 5 else 0
                 total += quantity * sell_price
 

@@ -1,5 +1,6 @@
 from kivymd.uix.screen import MDScreen
 from kivy.properties import ListProperty, StringProperty, NumericProperty
+from datetime import datetime
 
 
 class SaleScreen(MDScreen):
@@ -18,15 +19,18 @@ class SaleScreen(MDScreen):
     def reset_sale(self):
 
         self.cart = []
+        self.customer_name = ""
         self.total_price = 0
 
 
 
-    def add_to_cart(self, product, quantity):
+    def add_to_cart(self, product_id, product_name, quantity, price):
 
         item = {
-            "product": product,
-            "quantity": quantity
+            "product_id": product_id,
+            "product_name": product_name,
+            "quantity": int(quantity),
+            "price": int(price)
         }
 
         self.cart.append(item)
@@ -48,14 +52,38 @@ class SaleScreen(MDScreen):
 
 
 
-    def save_sale(self):
+    def save_sale(self, customer_id=None):
 
         app = self.manager.app
 
-        if hasattr(app, "db"):
+        if hasattr(app, "db") and len(self.cart) > 0:
 
-            # ثبت فاکتور در دیتابیس
-            pass
+            c = app.db.conn.cursor()
+
+            # ثبت فاکتور فروش
+            c.execute("""
+            INSERT INTO sales (store_id, customer_id, total, date)
+            VALUES (?, ?, ?, ?)
+            """, (1, customer_id, self.total_price, datetime.now().strftime("%Y-%m-%d")))
+
+            sale_id = c.lastrowid
+
+            # ثبت اقلام فروش
+            for item in self.cart:
+
+                c.execute("""
+                INSERT INTO sale_items (sale_id, product_id, quantity, price)
+                VALUES (?, ?, ?, ?)
+                """, (sale_id, item["product_id"], item["quantity"], item["price"]))
+
+                # بروزرسانی تعداد کالا
+                c.execute("""
+                UPDATE products
+                SET quantity = quantity - ?
+                WHERE id=?
+                """, (item["quantity"], item["product_id"]))
+
+            app.db.conn.commit()
 
 
         self.reset_sale()
