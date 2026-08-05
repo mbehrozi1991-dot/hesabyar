@@ -12,11 +12,12 @@ source.include_exts = py,kv,png,jpg,json,db
 
 version = 1.0
 
-requirements = python3,kivy,kivymd,arabic-reshaper,python-bidi==0.4.2
+requirements = python3,kivy==2.1.0,kivymd==1.1.1,arabic-reshaper,python-bidi==0.4.2
 
 orientation = portrait
 
 fullscreen = 0
+
 
 
 # Android
@@ -39,3 +40,4 @@ android.accept_sdk_license = True
 log_level = 2
 
 warn_on_root = 1
+
