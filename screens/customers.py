@@ -62,13 +62,59 @@ class CustomerScreen(MDScreen):
 
     def delete_customer(self, customer_id):
 
-        # حذف مشتری در مرحله بعد اضافه می‌شود
+        app = self.manager.app
+
+        if hasattr(app, "db"):
+
+            c = app.db.conn.cursor()
+
+            c.execute("DELETE FROM customers WHERE id=?", (customer_id,))
+
+            app.db.conn.commit()
 
         self.load_customers()
 
 
+    def edit_customer(self, customer_id, name, phone, address=""):
+
+        app = self.manager.app
+
+        if hasattr(app, "db"):
+
+            c = app.db.conn.cursor()
+
+            c.execute("""
+            UPDATE customers
+            SET name=?, phone=?, address=?
+            WHERE id=?
+            """, (name, phone, address, customer_id))
+
+            app.db.conn.commit()
+
+        self.load_customers()
 
 
     def search_customers(self, text):
 
         self.search_text = text
+
+        if text == "":
+            self.load_customers()
+            return
+
+        app = self.manager.app
+        filtered_customers = []
+
+        if hasattr(app, "db"):
+
+            c = app.db.conn.cursor()
+
+            c.execute("""
+            SELECT * FROM customers
+            WHERE store_id=1 AND name LIKE ?
+            """, (f"%{text}%",))
+
+            for item in c.fetchall():
+                filtered_customers.append(item)
+
+        self.customers = filtered_customers
