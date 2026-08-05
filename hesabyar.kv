@@ -1,23 +1,14 @@
 #:import dp kivy.metrics.dp
-#:import MDRaisedButton kivymd.uix.button.MDRaisedButton
-#:import MDTextField kivymd.uix.textfield.MDTextField
-#:import MDDataTable kivymd.uix.datatables.MDDataTable
-
 
 <HomeScreen>:
-
     MDBoxLayout:
         orientation: "vertical"
-
 
         MDTopAppBar:
             title: root.store_name
             elevation: 4
-            right_action_items: [["refresh", lambda x: root.refresh_dashboard()]]
-
 
         ScrollView:
-
             MDBoxLayout:
                 orientation: "vertical"
                 padding: dp(15)
@@ -25,12 +16,10 @@
                 size_hint_y: None
                 height: self.minimum_height
 
-
                 MDLabel:
                     text: "داشبورد حساب‌یار"
                     halign: "center"
                     font_style: "H5"
-
 
                 MDCard:
                     size_hint_y: None
@@ -49,8 +38,6 @@
                             font_style: "H6"
                             bold: True
 
-
-
                 MDCard:
                     size_hint_y: None
                     height: dp(120)
@@ -67,8 +54,6 @@
                             text: root.today_sales
                             font_style: "H6"
                             bold: True
-
-
 
                 MDCard:
                     size_hint_y: None
@@ -87,8 +72,6 @@
                             font_style: "H6"
                             bold: True
 
-
-
                 MDCard:
                     size_hint_y: None
                     height: dp(120)
@@ -105,7 +88,6 @@
                             text: root.monthly_profit
                             font_style: "H6"
                             bold: True
-
 
                 MDCard:
                     size_hint_y: None
@@ -146,18 +128,13 @@
                                 bold: True
 
 
-
-
 <ProductScreen>:
-
     MDBoxLayout:
         orientation: "vertical"
-
 
         MDTopAppBar:
             title: "کالاها"
             elevation: 4
-
 
         MDBoxLayout:
             orientation: "horizontal"
@@ -174,8 +151,6 @@
                 text: "افزودن"
                 size_hint_x: None
                 width: dp(100)
-                on_press: app.root.current = "add_product"
-
 
         MDLabel:
             text: "تعداد کالا : " + str(len(root.products))
@@ -183,44 +158,19 @@
             size_hint_y: None
             height: dp(40)
 
-
         ScrollView:
-
             MDList:
                 spacing: dp(10)
                 padding: dp(10)
 
-                RecycleView:
-                    size_hint_y: None
-                    height: self.minimum_height
-
-                    RecycleBoxLayout:
-                        orientation: "vertical"
-                        spacing: dp(10)
-                        size_hint_y: None
-                        height: self.minimum_height
-                        default_size_hint_y: None
-                        default_height: dp(80)
-
-                        ProductItem:
-                            product_id: self.product_id
-                            product_name: self.product_name
-                            sell_price: self.sell_price
-                            quantity: self.quantity
-
-
-
 
 <CustomerScreen>:
-
     MDBoxLayout:
         orientation: "vertical"
-
 
         MDTopAppBar:
             title: "مشتریان"
             elevation: 4
-
 
         MDBoxLayout:
             orientation: "horizontal"
@@ -237,8 +187,6 @@
                 text: "افزودن"
                 size_hint_x: None
                 width: dp(100)
-                on_press: app.root.current = "add_customer"
-
 
         MDLabel:
             text: "تعداد مشتری : " + str(len(root.customers))
@@ -246,26 +194,19 @@
             size_hint_y: None
             height: dp(40)
 
-
         ScrollView:
-
             MDList:
                 spacing: dp(10)
                 padding: dp(10)
 
 
-
-
 <SaleScreen>:
-
     MDBoxLayout:
         orientation: "vertical"
-
 
         MDTopAppBar:
             title: "ثبت فروش"
             elevation: 4
-
 
         MDBoxLayout:
             orientation: "vertical"
@@ -275,7 +216,6 @@
             MDTextField:
                 hint_text: "نام مشتری"
                 multiline: False
-                on_text: root.customer_name = self.text
 
             MDBoxLayout:
                 orientation: "horizontal"
@@ -296,7 +236,6 @@
                     size_hint_x: None
                     width: dp(80)
 
-
             MDLabel:
                 text: "سبد خرید"
                 halign: "center"
@@ -307,7 +246,6 @@
                 MDList:
                     spacing: dp(5)
                     padding: dp(5)
-
 
             MDBoxLayout:
                 orientation: "horizontal"
@@ -336,26 +274,19 @@
                 MDRaisedButton:
                     text: "ذخیره"
                     size_hint_x: 0.5
-                    on_press: root.save_sale()
 
                 MDRaisedButton:
                     text: "لغو"
                     size_hint_x: 0.5
-                    on_press: root.reset_sale()
-
-
 
 
 <ExpenseScreen>:
-
     MDBoxLayout:
         orientation: "vertical"
-
 
         MDTopAppBar:
             title: "هزینه‌ها"
             elevation: 4
-
 
         MDBoxLayout:
             orientation: "vertical"
@@ -378,7 +309,6 @@
                 size_hint_y: None
                 height: dp(50)
 
-
         MDLabel:
             text: "تاریخچه هزینه‌ها"
             halign: "center"
@@ -386,35 +316,26 @@
             height: dp(30)
 
         ScrollView:
-
             MDList:
                 spacing: dp(10)
                 padding: dp(10)
 
 
-
-
 <ReportScreen>:
-
     MDBoxLayout:
         orientation: "vertical"
-
 
         MDTopAppBar:
             title: "گزارش‌ها"
             elevation: 4
-            right_action_items: [["refresh", lambda x: root.refresh_reports()]]
-
 
         ScrollView:
-
             MDBoxLayout:
                 orientation: "vertical"
                 padding: dp(15)
                 spacing: dp(15)
                 size_hint_y: None
                 height: self.minimum_height
-
 
                 MDCard:
                     size_hint_y: None
@@ -433,7 +354,6 @@
                             font_style: "H6"
                             bold: True
 
-
                 MDCard:
                     size_hint_y: None
                     height: dp(100)
@@ -450,7 +370,6 @@
                             text: root.total_expenses
                             font_style: "H6"
                             bold: True
-
 
                 MDCard:
                     size_hint_y: None
@@ -469,7 +388,6 @@
                             font_style: "H6"
                             bold: True
                             color: (0, 1, 0, 1)
-
 
                 MDCard:
                     size_hint_y: None
