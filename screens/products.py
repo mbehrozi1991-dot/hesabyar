@@ -1,5 +1,6 @@
 from kivymd.uix.screen import MDScreen
 from kivy.properties import ListProperty, StringProperty
+import sqlite3
 
 
 class ProductScreen(MDScreen):
@@ -71,15 +72,59 @@ class ProductScreen(MDScreen):
 
     def delete_product(self, product_id):
 
-        # حذف در مرحله بعد اضافه می‌شود
+        app = self.manager.app
+
+        if hasattr(app, "db"):
+
+            c = app.db.conn.cursor()
+
+            c.execute("DELETE FROM products WHERE id=?", (product_id,))
+
+            app.db.conn.commit()
 
         self.load_products()
 
+
+    def edit_product(self, product_id, name, barcode, buy_price, sell_price, quantity):
+
+        app = self.manager.app
+
+        if hasattr(app, "db"):
+
+            c = app.db.conn.cursor()
+
+            c.execute("""
+            UPDATE products
+            SET name=?, barcode=?, buy_price=?, sell_price=?, quantity=?
+            WHERE id=?
+            """, (name, barcode, int(buy_price), int(sell_price), int(quantity), product_id))
+
+            app.db.conn.commit()
+
+        self.load_products()
 
 
     def search_products(self, text):
 
         self.search_text = text
 
+        if text == "":
+            self.load_products()
+            return
 
-        # جستجوی پیشرفته بعد از ساخت لیست کالا اضافه می‌شود
+        app = self.manager.app
+        filtered_products = []
+
+        if hasattr(app, "db"):
+
+            c = app.db.conn.cursor()
+
+            c.execute("""
+            SELECT * FROM products
+            WHERE store_id=1 AND name LIKE ?
+            """, (f"%{text}%",))
+
+            for item in c.fetchall():
+                filtered_products.append(item)
+
+        self.products = filtered_products
